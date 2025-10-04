@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ED2B4D29-BA66-4326-ACC8-B57D35A0366F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockAlertApi.Core", "src\StockAlertApi.Core\StockAlertApi.Core.csproj", "{5E4C64C7-23FB-4A5F-ABC2-545808AFECE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockAlertApi.Application", "src\StockAlertApi.Application\StockAlertApi.Application.csproj", "{2A279A1B-394B-47CC-B41D-D321BA5D73FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockAlertApi.Infrastructure", "src\StockAlertApi.Infrastructure\StockAlertApi.Infrastructure.csproj", "{19A5108A-FE1B-416E-90BE-EFFDC7933B8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockAlertApi.API", "src\StockAlertApi.API\StockAlertApi.API.csproj", "{EA5E1A80-7C00-4453-BC37-C6E914A9C3A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CBB826CD-75B7-4F35-B8C4-D9D1E3EBCF4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockAlertApi.Tests", "tests\StockAlertApi.Tests\StockAlertApi.Tests.csproj", "{7BDEF3C6-5110-43E6-A3FD-8536D334E550}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E4C64C7-23FB-4A5F-ABC2-545808AFECE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E4C64C7-23FB-4A5F-ABC2-545808AFECE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E4C64C7-23FB-4A5F-ABC2-545808AFECE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E4C64C7-23FB-4A5F-ABC2-545808AFECE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A279A1B-394B-47CC-B41D-D321BA5D73FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A279A1B-394B-47CC-B41D-D321BA5D73FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A279A1B-394B-47CC-B41D-D321BA5D73FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A279A1B-394B-47CC-B41D-D321BA5D73FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19A5108A-FE1B-416E-90BE-EFFDC7933B8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19A5108A-FE1B-416E-90BE-EFFDC7933B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19A5108A-FE1B-416E-90BE-EFFDC7933B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19A5108A-FE1B-416E-90BE-EFFDC7933B8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA5E1A80-7C00-4453-BC37-C6E914A9C3A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA5E1A80-7C00-4453-BC37-C6E914A9C3A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA5E1A80-7C00-4453-BC37-C6E914A9C3A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA5E1A80-7C00-4453-BC37-C6E914A9C3A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BDEF3C6-5110-43E6-A3FD-8536D334E550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BDEF3C6-5110-43E6-A3FD-8536D334E550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BDEF3C6-5110-43E6-A3FD-8536D334E550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BDEF3C6-5110-43E6-A3FD-8536D334E550}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5E4C64C7-23FB-4A5F-ABC2-545808AFECE9} = {ED2B4D29-BA66-4326-ACC8-B57D35A0366F}
+		{2A279A1B-394B-47CC-B41D-D321BA5D73FF} = {ED2B4D29-BA66-4326-ACC8-B57D35A0366F}
+		{19A5108A-FE1B-416E-90BE-EFFDC7933B8B} = {ED2B4D29-BA66-4326-ACC8-B57D35A0366F}
+		{EA5E1A80-7C00-4453-BC37-C6E914A9C3A9} = {ED2B4D29-BA66-4326-ACC8-B57D35A0366F}
+		{7BDEF3C6-5110-43E6-A3FD-8536D334E550} = {CBB826CD-75B7-4F35-B8C4-D9D1E3EBCF4B}
+	EndGlobalSection
+EndGlobal
