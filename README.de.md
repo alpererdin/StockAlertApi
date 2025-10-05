@@ -105,7 +105,7 @@ graph TD
 Option 1: Docker (Empfohlen)
 ``` bash
 1. Repository klonen
-git clone https://github.com/[your-username]/StockAlertApi.git
+git clone https://github.com/alpererdin/StockAlertApi.git
 cd StockAlertApi
 2. .env-Datei erstellen
 echo "FINNHUB_API_KEY=your_api_key_here" > .env
