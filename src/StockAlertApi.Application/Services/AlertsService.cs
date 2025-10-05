@@ -16,6 +16,17 @@ public class AlertsService : IAlertsService
 
     public async Task<Alert?> CreateAlertAsync(Guid userId, Guid stockId, decimal targetPrice, AlertDirection direction)
     {
+        var existingAlert = (await _alertRepository.GetUserAlertsAsync(userId))
+       .FirstOrDefault(a =>
+           a.StockId == stockId &&
+           a.TargetPrice == targetPrice &&
+           a.Direction == direction &&
+           a.Status == AlertStatus.Active);
+
+        if (existingAlert != null)
+        {
+            return null;  
+        }
         var alert = new Alert
         {
             UserId = userId,
