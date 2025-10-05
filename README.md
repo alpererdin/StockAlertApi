@@ -180,7 +180,7 @@ Authorization: Bearer {token}
 ```
 Direction: 1 = Above, 2 = Below
 
-Real-time Notifications
+# Real-time Notifications
 Connect to SignalR hub for live alerts:
 ``` javascript
 const connection = new signalR.HubConnectionBuilder()
