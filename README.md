@@ -15,33 +15,32 @@ This API allows users to:
 
 ## Architecture
 ```mermaid
-graph TD
-    subgraph "External World"
-        Client[Client Browser]
-        Finnhub[Finnhub API]
-    end
+graph TB
+    Client[Client Browser]
     
-    subgraph "API Layer (Presentation)"
-        Controllers
+    subgraph API["API Layer"]
+        Controllers[Controllers]
         SignalR[SignalR Hub]
     end
     
-    subgraph "Application Layer (Business Logic)"
+    subgraph Application["Application Layer"]
         AuthSvc[Auth Service]
         AlertSvc[Alerts Service]
         StockSvc[Stocks Service]
-        BackgroundSvc[Background Service]
+        BgSvc[Background Service]
     end
     
-    subgraph "Infrastructure Layer"
+    subgraph Infrastructure["Infrastructure Layer"]
         UserRepo[User Repository]
         AlertRepo[Alert Repository]
         StockRepo[Stock Repository]
         DB[(PostgreSQL)]
     end
     
-    Client -->|HTTP Requests| Controllers
-    Client <-->|WebSocket| SignalR
+    Finnhub[Finnhub API]
+    
+    Client -->|HTTP| Controllers
+    Client <-.->|WebSocket| SignalR
     
     Controllers --> AuthSvc
     Controllers --> AlertSvc
@@ -55,10 +54,10 @@ graph TD
     AlertRepo --> DB
     StockRepo --> DB
     
-    BackgroundSvc -->|Price Check| Finnhub
-    BackgroundSvc -->|Database Update| StockSvc
-    BackgroundSvc -->|Trigger Alert| AlertSvc
-    BackgroundSvc -->|Send Notification| SignalR
+    BgSvc -->|Fetch Price| Finnhub
+    BgSvc --> StockSvc
+    BgSvc --> AlertSvc
+    BgSvc -.->|Notify| SignalR
 ```
 
 **Clean Architecture Layers:**
