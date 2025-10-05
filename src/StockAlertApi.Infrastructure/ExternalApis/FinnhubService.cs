@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using StockAlertApi.Core.Interfaces.Services;
 using System.Text.Json;
 

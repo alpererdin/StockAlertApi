@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using StockAlertApi.Application.BackgroundServices;
 using StockAlertApi.Application.Services;
 using StockAlertApi.Core.Interfaces.Repositories;
 using StockAlertApi.Core.Interfaces.Services;
@@ -24,6 +25,10 @@ builder.Services.AddScoped<IStockRepository, StockRepository>();
 
 // External APIs
 builder.Services.AddHttpClient<IFinanceApiService, FinnhubService>();
+
+// Background Services
+builder.Services.AddHostedService<PriceMonitorService>();
+
 
 // Controllers
 builder.Services.AddControllers()
