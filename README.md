@@ -126,7 +126,7 @@ dotnet ef database update --project ../StockAlertApi.Infrastructure
 dotnet run
 ```
 
-API Usage
+# API Usage
 1. Register
 ``` http
 POST /api/auth/register
@@ -155,10 +155,10 @@ Response:
 }
 ```
 3. Authorize in Swagger
-
+``` json
 Click "Authorize" button
 Paste token (without "Bearer" prefix)
-
+```
 4. Create Stock
 ``` http
 POST /api/stocks
