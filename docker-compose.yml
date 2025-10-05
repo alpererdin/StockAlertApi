@@ -10,6 +10,31 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - stockalert-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=stockalert;Username=postgres;Password=postgres
+      - Jwt__Key=your-super-secret-key-min-32-characters-long-12345678
+      - Jwt__Issuer=StockAlertApi
+      - Jwt__Audience=StockAlertApiUsers
+      - Finnhub__ApiKey=${FINNHUB_API_KEY}
+      - Finnhub__BaseUrl=https://finnhub.io/api/v1
+    depends_on:
+      - postgres
+    networks:
+      - stockalert-network
 
 volumes:
   postgres_data:
+
+networks:
+  stockalert-network:
+    driver: bridge
