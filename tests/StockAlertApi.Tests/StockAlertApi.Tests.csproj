@@ -28,4 +28,8 @@
     <ProjectReference Include="..\..\src\StockAlertApi.Application\StockAlertApi.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Integration\Controllers\" />
+  </ItemGroup>
+
 </Project>
