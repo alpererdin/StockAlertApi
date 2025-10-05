@@ -16,14 +16,49 @@ Diese API ermöglicht es Benutzern:
 ## Architecture
 ```mermaid
 graph TD
-    Client[Client Browser] <--> SignalR[SignalR Hub]
-    SignalR <--> Background[Background Service]
-    Client --> Controllers[Controllers]
-    Controllers --> Services[Services]
-    Background --> Services
-    Services <--> Finnhub[Finnhub API]
-    Services --> EF[EF Core]
-    EF --> DB[(PostgreSQL)]
+    subgraph "External World"
+        Client[Client Browser]
+        Finnhub[Finnhub API]
+    end
+    
+    subgraph "API Layer (Presentation)"
+        Controllers
+        SignalR[SignalR Hub]
+    end
+    
+    subgraph "Application Layer (Business Logic)"
+        AuthSvc[Auth Service]
+        AlertSvc[Alerts Service]
+        StockSvc[Stocks Service]
+        BackgroundSvc[Background Service]
+    end
+    
+    subgraph "Infrastructure Layer"
+        UserRepo[User Repository]
+        AlertRepo[Alert Repository]
+        StockRepo[Stock Repository]
+        DB[(PostgreSQL)]
+    end
+    
+    Client -->|HTTP Requests| Controllers
+    Client <-->|WebSocket| SignalR
+    
+    Controllers --> AuthSvc
+    Controllers --> AlertSvc
+    Controllers --> StockSvc
+    
+    AuthSvc --> UserRepo
+    AlertSvc --> AlertRepo
+    StockSvc --> StockRepo
+    
+    UserRepo --> DB
+    AlertRepo --> DB
+    StockRepo --> DB
+    
+    BackgroundSvc -->|Price Check| Finnhub
+    BackgroundSvc -->|Database Update| StockSvc
+    BackgroundSvc -->|Trigger Alert| AlertSvc
+    BackgroundSvc -->|Send Notification| SignalR
 ```
 
 **Clean Architecture-Schichten:**
