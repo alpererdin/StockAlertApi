@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using StockAlertApi.API.Hubs;
+using StockAlertApi.API.Services;
 using StockAlertApi.Application.BackgroundServices;
 using StockAlertApi.Application.Services;
 using StockAlertApi.Core.Interfaces.Repositories;
@@ -13,10 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddSignalR();
+
 // Services
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IAlertsService, AlertsService>();
 builder.Services.AddScoped<IStocksService, StocksService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -28,7 +33,6 @@ builder.Services.AddHttpClient<IFinanceApiService, FinnhubService>();
 
 // Background Services
 builder.Services.AddHostedService<PriceMonitorService>();
-
 
 // Controllers
 builder.Services.AddControllers()
@@ -49,6 +53,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<AlertHub>("/alertHub");
+
 app.Run();

@@ -42,6 +42,7 @@ public class PriceMonitorService : BackgroundService
         var alertsService = scope.ServiceProvider.GetRequiredService<IAlertsService>();
         var stocksService = scope.ServiceProvider.GetRequiredService<IStocksService>();
         var financeApi = scope.ServiceProvider.GetRequiredService<IFinanceApiService>();
+        var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
 
         var activeAlerts = await alertsService.GetActiveAlertsAsync();
         if (!activeAlerts.Any())
@@ -67,8 +68,16 @@ public class PriceMonitorService : BackgroundService
             if (shouldTrigger)
             {
                 await alertsService.UpdateAlertStatusAsync(alert.Id, AlertStatus.Triggered, currentPrice);
+
+                await notificationService.SendAlertTriggeredAsync(
+                    alert.UserId,
+                    alert.Stock.TickerSymbol,
+                    currentPrice,
+                    alert.TargetPrice
+                );
+
                 _logger.LogInformation(
-                    "Alert triggered: {Symbol} reached {Price} (Target: {Target})",
+                    "Alert triggered and notification sent: {Symbol} reached {Price} (Target: {Target})",
                     alert.Stock.TickerSymbol, currentPrice, alert.TargetPrice);
             }
 
