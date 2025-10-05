@@ -13,28 +13,18 @@ Diese API ermöglicht es Benutzern:
 
 ---
 
-### Architektur
-┌─────────────┐      ┌──────────────┐      ┌─────────────┐
-│   Client    │◄────►│  SignalR Hub │◄────►│ Background  │
-│  (Browser)  │      │              │      │  Service    │
-└─────────────┘      └──────────────┘      └──────┬──────┘
-       │                     │
-┌──────▼──────┐              │
-│ Controllers │              │
-└──────┬──────┘              │
-       │                     │
-┌──────▼──────┐       ┌──────▼──────┐
-│  Services   │◄──────┤ Finnhub API │
-└──────┬──────┘       └─────────────┘
-       │
-┌──────▼──────┐
-│  EF Core    │
-└──────┬──────┘
-       │
-┌──────▼──────┐
-│ PostgreSQL  │
-└─────────────┘
-
+## Architecture
+```mermaid
+graph TD
+    Client[Client Browser] <--> SignalR[SignalR Hub]
+    SignalR <--> Background[Background Service]
+    Client --> Controllers[Controllers]
+    Controllers --> Services[Services]
+    Background --> Services
+    Services <--> Finnhub[Finnhub API]
+    Services --> EF[EF Core]
+    EF --> DB[(PostgreSQL)]
+```
 
 **Clean Architecture-Schichten:**
 - **Core**: Domänenentitäten & Schnittstellen (keine Abhängigkeiten)
@@ -77,93 +67,96 @@ Diese API ermöglicht es Benutzern:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Finnhub API Key](https://finnhub.io/) (kostenlose Stufe)
 
-#### Option 1: Docker (Empfohlen)
-# 1. Repository klonen
-git clone [https://github.com/](https://github.com/)[dein-benutzername]/StockAlertApi.git
+Option 1: Docker (Empfohlen)
+``` bash
+1. Repository klonen
+git clone https://github.com/[your-username]/StockAlertApi.git
 cd StockAlertApi
-
-# 2. .env-Datei erstellen
-echo "FINNHUB_API_KEY=dein_api_key_hier" > .env
-
-# 3. Mit Docker starten
+2. .env-Datei erstellen
+echo "FINNHUB_API_KEY=your_api_key_here" > .env
+3. Mit Docker starten
 docker-compose up -d
+```
+API available at: http://localhost:5000/swagger
 
-# API: http://localhost:5000/swagger
-
-#### Option 2: Manual Setup
-# 1. Configure API Key (User Secrets)
+Option 2: Manual Setup
+``` bash
+1. Configure API Key (User Secrets)
 cd src/StockAlertApi.API
 dotnet user-secrets set "Finnhub:ApiKey" "your_api_key_here"
-
-# 2. Start PostgreSQL
+2. Start PostgreSQL
 docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:16
-
-# 3. Apply migrations
+3. Apply migrations
 dotnet ef database update --project ../StockAlertApi.Infrastructure
-
-# 4. Run API
+4. Run API
 dotnet run
+```
 
- API Usage
+API Usage
 1. Register
-httpPOST /api/auth/register
+``` http
+POST /api/auth/register
 Content-Type: application/json
-
 {
-  "username": "testuser",
-  "email": "test@test.com",
-  "password": "Test123!"
+"username": "testuser",
+"email": "test@test.com",
+"password": "Test123!"
 }
+```
 2. Login & Get Token
-httpPOST /api/auth/login
+``` http
+POST /api/auth/login
 Content-Type: application/json
-
 {
-  "username": "testuser",
-  "password": "Test123!"
+"username": "testuser",
+"password": "Test123!"
 }
-
+```
 Response:
+``` json
 {
-  "token": "eyJhbGciOiJIUzI1NiIs...",
-  "userId": "...",
-  "username": "testuser"
+"token": "eyJhbGciOiJIUzI1NiIs...",
+"userId": "...",
+"username": "testuser"
 }
+```
 3. Authorize in Swagger
 
 Click "Authorize" button
 Paste token (without "Bearer" prefix)
 
 4. Create Stock
-httpPOST /api/stocks
+``` http
+POST /api/stocks
 Authorization: Bearer {token}
-
 {
-  "tickerSymbol": "AAPL",
-  "companyName": "Apple Inc."
+"tickerSymbol": "AAPL",
+"companyName": "Apple Inc."
 }
+```
 5. Create Alert
-httpPOST /api/alerts
+``` http
+POST /api/alerts
 Authorization: Bearer {token}
-
 {
-  "stockId": "...",
-  "targetPrice": 200.50,
-  "direction": 1
+"stockId": "...",
+"targetPrice": 200.50,
+"direction": 1
 }
+```
 Direction: 1 = Above, 2 = Below
 
- Real-time Notifications
+Real-time Notifications
 Connect to SignalR hub for live alerts:
-javascriptconst connection = new signalR.HubConnectionBuilder()
-    .withUrl("/alertHub?userId={your-user-id}")
-    .build();
-
+``` javascript
+const connection = new signalR.HubConnectionBuilder()
+.withUrl("/alertHub?userId={your-user-id}")
+.build();
 connection.on("AlertTriggered", (data) => {
-    console.log(`Alert: ${data.stockSymbol} reached ${data.currentPrice}`);
+console.log(Alert: ${data.stockSymbol} reached ${data.currentPrice});
 });
-
 connection.start();
+```
 Test page available at: http://localhost:5000/test.html
 
 
