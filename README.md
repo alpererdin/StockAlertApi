@@ -15,33 +15,32 @@ This API allows users to:
 
 ## Architecture
 ```mermaid
-graph TD
-    subgraph "External World"
-        Client[Client Browser]
-        Finnhub[Finnhub API]
-    end
+graph TB
+    Client[Client Browser]
     
-    subgraph "API Layer (Presentation)"
-        Controllers
+    subgraph API["API Layer"]
+        Controllers[Controllers]
         SignalR[SignalR Hub]
     end
     
-    subgraph "Application Layer (Business Logic)"
+    subgraph Application["Application Layer"]
         AuthSvc[Auth Service]
         AlertSvc[Alerts Service]
         StockSvc[Stocks Service]
-        BackgroundSvc[Background Service]
+        BgSvc[Background Service]
     end
     
-    subgraph "Infrastructure Layer"
+    subgraph Infrastructure["Infrastructure Layer"]
         UserRepo[User Repository]
         AlertRepo[Alert Repository]
         StockRepo[Stock Repository]
         DB[(PostgreSQL)]
     end
     
-    Client -->|HTTP Requests| Controllers
-    Client <-->|WebSocket| SignalR
+    Finnhub[Finnhub API]
+    
+    Client -->|HTTP| Controllers
+    Client <-.->|WebSocket| SignalR
     
     Controllers --> AuthSvc
     Controllers --> AlertSvc
@@ -55,10 +54,10 @@ graph TD
     AlertRepo --> DB
     StockRepo --> DB
     
-    BackgroundSvc -->|Price Check| Finnhub
-    BackgroundSvc -->|Database Update| StockSvc
-    BackgroundSvc -->|Trigger Alert| AlertSvc
-    BackgroundSvc -->|Send Notification| SignalR
+    BgSvc -->|Fetch Price| Finnhub
+    BgSvc --> StockSvc
+    BgSvc --> AlertSvc
+    BgSvc -.->|Notify| SignalR
 ```
 
 **Clean Architecture Layers:**
@@ -105,7 +104,7 @@ graph TD
 Option 1: Docker (Recommended)
 ``` bash
 1. Clone repository
-git clone https://github.com/[your-username]/StockAlertApi.git
+git clone https://github.com/alpererdin/StockAlertApi.git
 cd StockAlertApi
 2. Create .env file
 echo "FINNHUB_API_KEY=your_api_key_here" > .env
@@ -127,7 +126,7 @@ dotnet ef database update --project ../StockAlertApi.Infrastructure
 dotnet run
 ```
 
-API Usage
+# API Usage
 1. Register
 ``` http
 POST /api/auth/register
@@ -156,10 +155,10 @@ Response:
 }
 ```
 3. Authorize in Swagger
-
+``` json
 Click "Authorize" button
 Paste token (without "Bearer" prefix)
-
+```
 4. Create Stock
 ``` http
 POST /api/stocks
@@ -181,7 +180,7 @@ Authorization: Bearer {token}
 ```
 Direction: 1 = Above, 2 = Below
 
-Real-time Notifications
+# Real-time Notifications
 Connect to SignalR hub for live alerts:
 ``` javascript
 const connection = new signalR.HubConnectionBuilder()
