@@ -1,6 +1,9 @@
 [Deutsch](README.de.md)
 
 #  Stock Alert API
+
+![.NET Build](https://github.com/alpererdin/StockAlertApi/actions/workflows/dotnet.yml/badge.svg)
+
 A real-time stock price monitoring system with instant notifications built using Clean Architecture and modern .NET technologies.
 
 ###  Project Overview
