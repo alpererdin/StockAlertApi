@@ -58,6 +58,10 @@ builder.Services.AddHttpClient<IFinanceApiService, FinnhubService>();
 // Background Services
 builder.Services.AddHostedService<PriceMonitorService>();
 
+// Health Checks
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!);
+
 // Controllers
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
