@@ -13,27 +13,25 @@ public class FinnhubService : IFinanceApiService
     {
         _httpClient = httpClient;
         _apiKey = configuration["Finnhub:ApiKey"] ?? throw new InvalidOperationException("Finnhub API key not configured");
-        _httpClient.BaseAddress = new Uri(configuration["Finnhub:BaseUrl"] ?? "https://finnhub.io/api/v1");
+        _httpClient.BaseAddress = new Uri(configuration["Finnhub:BaseUrl"] ?? "https://finnhub.io/api/v1/");
     }
 
     public async Task<decimal?> GetCurrentPriceAsync(string tickerSymbol)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"/quote?symbol={tickerSymbol}&token={_apiKey}");
+            var response = await _httpClient.GetAsync($"quote?symbol={tickerSymbol}&token={_apiKey}");
             response.EnsureSuccessStatusCode();
-
             var json = await response.Content.ReadAsStringAsync();
-            var data = JsonSerializer.Deserialize<FinnhubQuote>(json);
-
+            var data = FinnhubQuote.Deserialize(json);
             return data?.CurrentPrice;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"Error parsing {tickerSymbol}: {ex.Message}");
             return null;
         }
     }
-
     public async Task<Dictionary<string, decimal>> GetBatchPricesAsync(IEnumerable<string> tickerSymbols)
     {
         var prices = new Dictionary<string, decimal>();
