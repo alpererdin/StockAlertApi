@@ -28,7 +28,6 @@ public class FinnhubService : IFinanceApiService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error parsing {tickerSymbol}: {ex.Message}");
             return null;
         }
     }
