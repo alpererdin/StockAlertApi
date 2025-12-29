@@ -11,4 +11,6 @@ public interface IAlertsService
     Task<bool> DeleteAlertAsync(Guid id, Guid userId);
     Task<List<Alert>> GetActiveAlertsAsync();
     Task UpdateAlertStatusAsync(Guid alertId, AlertStatus status, decimal? triggerPrice = null);
+
+    Task UpdateLastCheckedAsync(Guid alertId);
 }

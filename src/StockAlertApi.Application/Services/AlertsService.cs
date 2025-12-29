@@ -81,4 +81,14 @@ public class AlertsService : IAlertsService
 
         await _alertRepository.UpdateAsync(alert);
     }
+
+    public async Task UpdateLastCheckedAsync(Guid alertId)
+    {
+        var alert = await _alertRepository.GetByIdAsync(alertId);
+        if (alert == null) return;
+
+        alert.LastCheckedAt = DateTime.UtcNow;
+        await _alertRepository.UpdateAsync(alert);
+    }
+
 }

@@ -80,8 +80,11 @@ public class PriceMonitorService : BackgroundService
                     "Alert triggered and notification sent: {Symbol} reached {Price} (Target: {Target})",
                     alert.Stock.TickerSymbol, currentPrice, alert.TargetPrice);
             }
+        
+            //    alert.LastCheckedAt = DateTime.UtcNow;
 
-            alert.LastCheckedAt = DateTime.UtcNow;
+            await alertsService.UpdateLastCheckedAsync(alert.Id);
+            
         }
     }
 }
