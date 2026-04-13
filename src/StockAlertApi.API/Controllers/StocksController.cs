@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using StockAlertApi.Core.Interfaces.Services;
-
+using Microsoft.AspNetCore.Authorization;
 namespace StockAlertApi.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class StocksController : ControllerBase
 {

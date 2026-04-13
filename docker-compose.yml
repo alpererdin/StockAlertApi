@@ -22,7 +22,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=stockalert;Username=postgres;Password=postgres
-      - Jwt__Key=your-super-secret-key-min-32-characters-long-12345678
+      - Jwt__Key=${JWT_KEY}
       - Jwt__Issuer=StockAlertApi
       - Jwt__Audience=StockAlertApiUsers
       - Finnhub__ApiKey=${FINNHUB_API_KEY}

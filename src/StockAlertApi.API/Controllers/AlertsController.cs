@@ -29,8 +29,10 @@ public class AlertsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAlert(Guid id)
     {
+        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var alert = await _alertsService.GetAlertByIdAsync(id);
-        if (alert == null)
+        
+        if (alert == null || alert.UserId != userId)
             return NotFound();
 
         return Ok(alert);
